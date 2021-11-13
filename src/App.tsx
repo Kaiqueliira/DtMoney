@@ -4,7 +4,6 @@ import { GlobalStyles } from './styles/global';
 import { useState } from 'react';
 import { NewTransactionModal } from './components/NewTransactionModal';
 
-
 function App() {
   const [isNewTransactionModalOpen, setIsNewTransactionModal] = useState(false)
 
