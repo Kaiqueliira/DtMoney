@@ -3,12 +3,12 @@ import { api } from "../../services/api";
 import { Container } from "./styles";
 
 interface Transactions {
-    id: number;
-    title: string;
-    amount: number;
-    category: string;
-    createdAt: Date;
-    type: string;
+    id: number
+    title: string
+    amount: number
+    type: string
+    category: string
+    createdAt: string
 }
 
 export function TransactionsTable() {
@@ -16,9 +16,9 @@ export function TransactionsTable() {
 
     useEffect(() => {
         api.get('transactions')
-            .then((data) => setTransaction(data.data))
-    }, [])
+            .then(response => setTransaction(response.data.transactions))
 
+    }, [])
     return (
         <Container>
             <table>
@@ -32,14 +32,21 @@ export function TransactionsTable() {
                 </thead>
                 <tbody>
                     {
-                        transactions.map((transactions) => (
-                            <tr>
-                                <td>{transactions.title}</td>
-                                <td className={transactions.type}> {transactions.type === 'withdraw' ? '-' : ''} R$  {transactions.amount}</td>
-                                <td>{transactions.category}</td>
-                                <td>{transactions.createdAt}</td>
-                            </tr>
-                        ))
+                        transactions.map(transactions => {
+                            return (
+                                <tr key={transactions.id}>
+                                    <td>{transactions.title}</td>
+                                    <td className={transactions.type}>{Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(transactions.amount)}</td>
+                                    <td>{transactions.category}</td>
+                                    <td>{
+                                        Intl.DateTimeFormat('pt-BR').format(new Date(transactions.createdAt))
+                                    }</td>
+                                </tr>)
+                        }
+                        )
                     }
                 </tbody>
             </table>
